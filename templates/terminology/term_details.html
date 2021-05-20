@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <div class="container mt-3">
+        <h1>{{ term.name }}</h1>
+        <p>{{ term.explanation }}</p>
+        <div class="row">
+            {% for parent in term.parents.all %}
+                <div class="col-7 mt-3">
+                    <div class="card">
+                        <div class="card-header">
+                            {{ parent.name|upper }}
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">{{ parent.explanation|truncatewords:15 }}</p>
+                            <a href="{{ parent.get_absolute_url }}" class="btn btn-primary">Перейти</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

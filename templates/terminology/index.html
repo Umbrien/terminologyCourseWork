@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container mt-5 mb-5">
+        <div class="input-group">
+            <input type="search" class="form-control" placeholder="Search">
+            <div class="input-group-append">
+                <button type="button" class="btn btn-outline-primary">Search</button>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row justify-content-center mb-5">
+            {% for term in terms %}
+                <div class="col-7 mt-3">
+                    <div class="card">
+                        <div class="card-header">
+                            {{ term.name|upper }}
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">{{ term.explanation|truncatewords:15 }}</p>
+                            <a href="{{ term.get_absolute_url }}" class="btn btn-primary">Перейти</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
