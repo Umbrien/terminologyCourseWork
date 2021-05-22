@@ -1,5 +1,5 @@
 from django.contrib.admin.widgets import FilteredSelectMultiple
-from django.forms import ModelMultipleChoiceField, ModelForm
+from django.forms import ModelForm
 from django.contrib import admin
 from .models import Term
 
