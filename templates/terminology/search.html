@@ -4,7 +4,7 @@
     <div class="container mt-5 mb-5">
         <form action="{% url 'search' %}" method="get">
             <div class="input-group">
-                <input type="search" class="form-control" name="q" placeholder="Имя термина или описание" value="{{ q }}">
+                <input type="search" class="form-control" name="q" placeholder="Имя термина" value="{{ q }}">
                 <div class="input-group-append">
                     <button type="submit" class="btn btn-outline-primary">Поиск</button>
                 </div>
@@ -12,6 +12,9 @@
         </form>
     </div>
     {% if terms %}
+        <div class="container">
+            <a href="{% url 'save' %}?q={{ q }}" class="btn btn-light active">Сохранить</a>
+        </div>
         <div class="container">
             <div class="row justify-content-center mb-5">
                 {% for term in terms %}

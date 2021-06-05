@@ -1,5 +1,8 @@
+from django.core.serializers import serialize
+from django.http import HttpResponse
 from django.views.generic.base import TemplateView
 from django.views.generic import DetailView, ListView
+from utils import term_unicode__icontains
 
 from terminology.models import Term
 
@@ -35,14 +38,15 @@ class Search(ListView):
 
         context['q'] = q
 
-        # creating empty QuerySet
-        searchSet = Term.objects.none()
-        for query in Term.objects.all():
-            if q.upper() in query.name.upper():
-                # append to QuerySet
-                searchSet |= Term.objects.filter(name__contains=query.name)
-
         context.update({
-            'terms': searchSet
+            'terms': term_unicode__icontains(q)
         })
         return context
+
+def save(request):
+    q = request.GET.get('q')
+
+    search_set = term_unicode__icontains(q)
+
+    content = serialize('yaml', search_set)
+    return HttpResponse(content, content_type='application/json')
