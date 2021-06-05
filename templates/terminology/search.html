@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container mt-5 mb-5">
+        <form action="{% url 'search' %}" method="get">
+            <div class="input-group">
+                <input type="search" class="form-control" name="q" placeholder="Имя термина или описание" value="{{ q }}">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-outline-primary">Поиск</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    {% if terms %}
+        <div class="container">
+            <div class="row justify-content-center mb-5">
+                {% for term in terms %}
+                    <div class="col-7 mt-3">
+                        <div class="card">
+                            <div class="card-header">
+                                {{ term.name|upper }}
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">{{ term.explanation|truncatewords:15 }}</p>
+                                <a href="{{ term.get_absolute_url }}" class="btn btn-primary">Перейти</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% else %}
+        <div class="container">
+            <h1>Ничего не нашлось =(</h1>
+        </div>
+    {% endif %}
+{% endblock %}

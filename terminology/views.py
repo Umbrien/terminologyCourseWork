@@ -1,6 +1,5 @@
 from django.views.generic.base import TemplateView
-from django.views.generic import DetailView
-
+from django.views.generic import DetailView, ListView
 
 from terminology.models import Term
 
@@ -21,3 +20,29 @@ class TermView(DetailView):
     pk_url_kwarg = 'term_pk'
     context_object_name = 'term'
     template_name = 'terminology/term_details.html'
+
+class Search(ListView):
+    """Search terms"""
+    template_name = 'terminology/search.html'
+
+    def get_queryset(self):
+        return Term.objects.filter(name__icontains=self.request.GET.get('q'))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        q = self.request.GET.get('q')
+
+        context['q'] = q
+
+        # creating empty QuerySet
+        searchSet = Term.objects.none()
+        for query in Term.objects.all():
+            if q.upper() in query.name.upper():
+                # append to QuerySet
+                searchSet |= Term.objects.filter(name__contains=query.name)
+
+        context.update({
+            'terms': searchSet
+        })
+        return context
